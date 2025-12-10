@@ -15,9 +15,9 @@ EXPOSE 8080
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
 WORKDIR /src
-COPY ["EasyAuthTokenstoreProxy.csproj", "."]
+COPY ["src/EasyAuthTokenstoreProxy.csproj", "."]
 RUN dotnet restore "./EasyAuthTokenstoreProxy.csproj"
-COPY . .
+COPY src/ .
 WORKDIR "/src/."
 RUN dotnet build "EasyAuthTokenstoreProxy.csproj" -c Release -o /app/build
 
