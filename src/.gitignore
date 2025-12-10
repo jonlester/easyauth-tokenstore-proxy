@@ -1,0 +1,13 @@
+# Environment files with secrets
+.env.local
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+.vs/
+
+# User secrets
+secrets.json

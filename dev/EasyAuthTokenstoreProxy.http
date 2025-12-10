@@ -1,0 +1,33 @@
+@EasyAuthTokenstoreProxy_HostAddress = http://localhost:8080
+
+# Health check
+GET {{EasyAuthTokenstoreProxy_HostAddress}}/health
+Accept: application/json
+
+
+###
+
+# blob operations 
+# Note: Set these environment variables before running
+# BLOB_PRIMARY_CONTAINER_URL=https://yourstorageaccount.blob.core.windows.net/container?sp=racwdl&st=...
+# BLOB_SECONDARY_READ_CONTAINER_URL=https://yourstorageaccount.blob.core.windows.net/container?sp=r&st=...
+
+PUT {{EasyAuthTokenstoreProxy_HostAddress}}/test-file.json
+Content-Type: application/json
+x-ms-blob-type: BlockBlob
+
+{"message": "This is test content for the blob storage proxy!"}
+
+###
+# GET the file back - should exist
+GET {{EasyAuthTokenstoreProxy_HostAddress}}/test-file.json
+
+###
+# GET a file that does not exist - should return 404 from secondary read container
+GET {{EasyAuthTokenstoreProxy_HostAddress}}/nonexistent-file.json
+
+###
+# Clean up
+DELETE {{EasyAuthTokenstoreProxy_HostAddress}}/test-file.json
+
+###
