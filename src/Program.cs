@@ -1,6 +1,8 @@
 using EasyAuthTokenstoreProxy.Configuration;
 using EasyAuthTokenstoreProxy.Extensions;
 
+const string listenUrl = "https://localhost:8081";
+
 // Load .env files in development
 if (args.Contains("--environment=Development") || Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
 {
@@ -18,9 +20,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Kestrel for HTTP (sidecar internal communication)
 builder.WebHost.ConfigureKestrel(options =>
 {
+    options.AddServerHeader = false;
     // HTTP port for sidecar communication
     options.ListenAnyIP(8081);
 });
+
+builder.WebHost.UseUrls(listenUrl);
 
 
 
@@ -51,10 +56,6 @@ builder.Services.AddSingleton(blobConfig);
 
 var app = builder.Build();
 
-// Note: For Azure App Service sidecar deployment,
-// HTTPS is handled by the main app - this sidecar uses HTTP internally
-
-// Configure endpoints
 app.MapBlobProxyEndpoints();
 
 app.Run();
