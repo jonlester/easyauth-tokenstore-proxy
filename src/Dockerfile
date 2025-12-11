@@ -10,10 +10,7 @@ RUN apk add --no-cache icu-libs
 RUN addgroup -g 1001 -S appgroup && \
     adduser -u 1001 -S appuser -G appgroup
 
-EXPOSE 8081 8443
-
-# Create certificate directory and generate .NET development certificate
-RUN mkdir -p /app/certs
+EXPOSE 8081
 
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build

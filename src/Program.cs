@@ -15,17 +15,11 @@ if (args.Contains("--environment=Development") || Environment.GetEnvironmentVari
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Kestrel for HTTPS support (required by EasyAuth)
+// Configure Kestrel for HTTP (sidecar internal communication)
 builder.WebHost.ConfigureKestrel(options =>
 {
-    // HTTP port for internal communication
+    // HTTP port for sidecar communication
     options.ListenAnyIP(8081);
-    
-    // HTTPS port for EasyAuth (uses development certificate)
-    options.ListenAnyIP(8443, listenOptions =>
-    {
-        listenOptions.UseHttps();
-    });
 });
 
 
